@@ -4,17 +4,16 @@ import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.function.BiFunction;
-import java.util.function.Function;
-import java.util.function.Predicate;
 
 public class LogicTest {
 
   private static final int NEGATIVE_POSITION = -1;
-
+  private static final int MOVE_BY_ONE = 1;
+  private static final int MOVE_BY_TWO = 2;
   private static final int SIZE = 10;
 
   private Logics logic;
-  private Pair<Integer, Integer> knight = new Pair<Integer, Integer>(1, 1);
+  private Pair<Integer, Integer> knight = new Pair<Integer, Integer>(4, 4);
   private Pair<Integer, Integer> pawn = new Pair<Integer, Integer>(5, 5);
 
   @BeforeEach
@@ -76,8 +75,43 @@ public class LogicTest {
   @Test
   public void testKnightAndPawnOnSamePosition() {
     assertAll(
-      () -> assertFalse(logic.hasKnight(this.pawn.getX(), this.pawn.getY())),
-      () -> assertFalse(logic.hasPawn(this.knight.getX(), this.knight.getY()))
+        () -> assertFalse(logic.hasKnight(this.pawn.getX(), this.pawn.getY())),
+        () -> assertFalse(logic.hasPawn(this.knight.getX(), this.knight.getY())));
+  }
+
+  @Test
+  public void testKnightMoveCorrectly() {
+    var firstMove = doRightMove(MOVE_BY_ONE, MOVE_BY_TWO, true, true);
+    var secondMove = doRightMove(MOVE_BY_ONE, MOVE_BY_TWO, true, false);
+    var thirdMove = doRightMove(MOVE_BY_ONE, MOVE_BY_TWO, false, true);
+    var fourthMove = doRightMove(MOVE_BY_ONE, MOVE_BY_TWO, false, false);
+    var fifthMove = doRightMove(MOVE_BY_TWO, MOVE_BY_ONE, true, true);
+    var sixthMove = doRightMove(MOVE_BY_TWO, MOVE_BY_ONE, true, false);
+    var seventhMove = doRightMove(MOVE_BY_TWO, MOVE_BY_ONE, false, true);
+    var eighthMove = doRightMove(MOVE_BY_TWO, MOVE_BY_ONE, false, false);
+
+    //TODO() Generalize this making a for that see every move, then assertTrue(logic.hasKnight(x,y)) when the knight has moved, assertFalse() when it should not move
+    assertAll(
+      () -> assertFalse(firstMove),
+      () -> assertFalse(secondMove),
+      () -> assertFalse(thirdMove),
+      () -> assertFalse(fourthMove),
+      () -> assertFalse(fifthMove),
+      () -> assertFalse(sixthMove),
+      () -> assertFalse(seventhMove),
+      () -> assertFalse(eighthMove)
     );
+  }
+
+  private boolean doRightMove(int x, int y, boolean xPositive, boolean yPositive) {
+    logic.hit(this.knight.getX(), this.knight.getY());
+
+    var xPosition = this.knight.getX() + x;
+    var yPosition = this.knight.getX() + y;
+    boolean hit = logic.hit(xPosition, yPosition);
+
+    assertTrue(logic.hasKnight(xPosition, yPosition));
+
+    return hit;
   }
 }
