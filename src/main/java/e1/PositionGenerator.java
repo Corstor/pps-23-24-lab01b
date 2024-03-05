@@ -4,6 +4,4 @@ public interface PositionGenerator {
 
     Pair<Integer, Integer> generate();
 
-    int getSize();
-
 }

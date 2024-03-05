@@ -6,8 +6,8 @@ public class LogicsImpl implements Logics {
 	private Pair<Integer,Integer> knight;
 	private final int size;
 	 
-    public LogicsImpl(PositionGenerator positionGenerator){
-		this(positionGenerator.getSize(), positionGenerator.generate(), positionGenerator.generate());
+    public LogicsImpl(int size, PositionGenerator positionGenerator){
+		this(size, positionGenerator.generate(), positionGenerator.generate());
     }
     
 	public LogicsImpl(int size, Pair<Integer, Integer> knight, Pair<Integer, Integer> pawn) {
