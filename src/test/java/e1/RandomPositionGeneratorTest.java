@@ -1,6 +1,7 @@
 package e1;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -41,5 +42,10 @@ public class RandomPositionGeneratorTest {
 
             assertNotEquals(firstPosition, secondPosition);
         }
+    }
+
+    @Test
+    public void testGetSizeOfPositionGenerator() {
+        assertEquals(SIZE, this.positionGenerator.getSize());
     }
 }

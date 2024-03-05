@@ -31,4 +31,9 @@ public class RandomPositionGenerator implements PositionGenerator {
         return this.lastPair!=null && this.lastPair.equals(pair);
     }
 
+    @Override
+    public int getSize() {
+        return this.size;
+    }
+
 }
