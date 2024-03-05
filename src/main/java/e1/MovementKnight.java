@@ -14,6 +14,13 @@ public class MovementKnight implements Movement {
             throw new IndexOutOfBoundsException();
         }
 
+        int movementOnX = x - pair.getX();
+        int movementOnY = y - pair.getY();
+
+        if (movementOnX != 0 && movementOnY != 0 && Math.abs(movementOnX) + Math.abs(movementOnY) == 3) {
+            return new Pair<Integer,Integer>(x, y);
+        }
+
         return pair;
     }
 

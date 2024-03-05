@@ -1,6 +1,7 @@
 package e1;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -24,5 +25,22 @@ public class MovementTest {
         () -> assertThrows(IndexOutOfBoundsException.class, () -> this.movement.move(NEGATIVE_POSITION, 1, this.knight)),
         () -> assertThrows(IndexOutOfBoundsException.class, () -> this.movement.move(1, SIZE, this.knight)),
         () -> assertThrows(IndexOutOfBoundsException.class, () -> this.movement.move(SIZE, 1, this.knight)));
+    }
+
+    @Test
+    public void testKnightMoveCorrectly() {
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                var newPosition = this.movement.move(i, j, knight);
+                int x = i - this.knight.getX();
+                int y = j - this.knight.getY();
+
+                if (x != 0 && y != 0 && Math.abs(x)+Math.abs(y)==3) {
+                    assertEquals(new Pair<>(i, j), newPosition);
+                } else {
+                    assertEquals(knight, newPosition);
+                }
+            }
+        }
     }
 }
