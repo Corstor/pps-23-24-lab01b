@@ -8,8 +8,6 @@ import java.util.function.BiFunction;
 public class LogicTest {
 
   private static final int NEGATIVE_POSITION = -1;
-  private static final int MOVE_BY_ONE = 1;
-  private static final int MOVE_BY_TWO = 2;
   private static final int SIZE = 10;
 
   private Logics logic;
@@ -81,37 +79,27 @@ public class LogicTest {
 
   @Test
   public void testKnightMoveCorrectly() {
-    var firstMove = doRightMove(MOVE_BY_ONE, MOVE_BY_TWO, true, true);
-    var secondMove = doRightMove(MOVE_BY_ONE, MOVE_BY_TWO, true, false);
-    var thirdMove = doRightMove(MOVE_BY_ONE, MOVE_BY_TWO, false, true);
-    var fourthMove = doRightMove(MOVE_BY_ONE, MOVE_BY_TWO, false, false);
-    var fifthMove = doRightMove(MOVE_BY_TWO, MOVE_BY_ONE, true, true);
-    var sixthMove = doRightMove(MOVE_BY_TWO, MOVE_BY_ONE, true, false);
-    var seventhMove = doRightMove(MOVE_BY_TWO, MOVE_BY_ONE, false, true);
-    var eighthMove = doRightMove(MOVE_BY_TWO, MOVE_BY_ONE, false, false);
+    for (int i = 0; i < SIZE; i++) {
+      for (int j = 0; j < SIZE; j++) {
+        this.logic.hit(i, j);
+        int x = i - this.knight.getX();
+        int y = j - this.knight.getY();
 
-    //TODO() Generalize this making a for that see every move, then assertTrue(logic.hasKnight(x,y)) when the knight has moved, assertFalse() when it should not move
-    assertAll(
-      () -> assertFalse(firstMove),
-      () -> assertFalse(secondMove),
-      () -> assertFalse(thirdMove),
-      () -> assertFalse(fourthMove),
-      () -> assertFalse(fifthMove),
-      () -> assertFalse(sixthMove),
-      () -> assertFalse(seventhMove),
-      () -> assertFalse(eighthMove)
-    );
+        if (x != 0 && y != 0) {
+          if (Math.abs(x) + Math.abs(y) == 3) {
+            assertTrue(this.logic.hasKnight(i, j));
+            this.logic.hit(this.knight.getX(), this.knight.getY());
+          } else {
+            assertFalse(this.logic.hasKnight(i, j));
+          }
+        }
+      }
+    }
   }
 
-  private boolean doRightMove(int x, int y, boolean xPositive, boolean yPositive) {
-    logic.hit(this.knight.getX(), this.knight.getY());
-
-    var xPosition = this.knight.getX() + x;
-    var yPosition = this.knight.getX() + y;
-    boolean hit = logic.hit(xPosition, yPosition);
-
-    assertTrue(logic.hasKnight(xPosition, yPosition));
-
-    return hit;
+  @Test
+  public void testKnightCatchesPawn() {
+    this.logic.hit(this.knight.getX()+2, this.knight.getY()-1);
+    assertTrue(this.logic.hit(this.pawn.getX(), this.pawn.getY()));
   }
 }
