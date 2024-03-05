@@ -15,23 +15,36 @@ public class MovementTest {
 
     @BeforeEach
     public void createMovement() {
-        this.movement = new MovementKnight(SIZE);
+        this.movement = (x, y) -> {
+            if (x < 0 || y < 0 || x >= SIZE || y >= SIZE) {
+                throw new IndexOutOfBoundsException();
+            }
+    
+            int movementOnX = x - knight.getX();
+            int movementOnY = y - knight.getY();
+    
+            if (movementOnX != 0 && movementOnY != 0 && Math.abs(movementOnX) + Math.abs(movementOnY) == 3) {
+                return new Pair<Integer,Integer>(x, y);
+            }
+    
+            return knight;
+        };
     }
 
     @Test
     public void testOutOfBoundMovement() {
         assertAll(
-        () -> assertThrows(IndexOutOfBoundsException.class, () -> this.movement.move(1, NEGATIVE_POSITION, this.knight)),
-        () -> assertThrows(IndexOutOfBoundsException.class, () -> this.movement.move(NEGATIVE_POSITION, 1, this.knight)),
-        () -> assertThrows(IndexOutOfBoundsException.class, () -> this.movement.move(1, SIZE, this.knight)),
-        () -> assertThrows(IndexOutOfBoundsException.class, () -> this.movement.move(SIZE, 1, this.knight)));
+        () -> assertThrows(IndexOutOfBoundsException.class, () -> this.movement.move(1, NEGATIVE_POSITION)),
+        () -> assertThrows(IndexOutOfBoundsException.class, () -> this.movement.move(NEGATIVE_POSITION, 1)),
+        () -> assertThrows(IndexOutOfBoundsException.class, () -> this.movement.move(1, SIZE)),
+        () -> assertThrows(IndexOutOfBoundsException.class, () -> this.movement.move(SIZE, 1)));
     }
 
     @Test
     public void testKnightMoveCorrectly() {
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {
-                var newPosition = this.movement.move(i, j, knight);
+                var newPosition = this.movement.move(i, j);
                 int x = i - this.knight.getX();
                 int y = j - this.knight.getY();
 
