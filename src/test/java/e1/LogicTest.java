@@ -16,7 +16,7 @@ public class LogicTest {
 
   @BeforeEach
   public void createLogic() {
-    logic = new LogicsImpl(SIZE, knight, pawn);
+    logic = new LogicsImpl(knight, pawn, new MovementImpl(SIZE));
   }
 
   @Test

@@ -15,31 +15,15 @@ public class MovementTest {
 
     @BeforeEach
     public void createMovement() {
-        this.movement = (destination, pairToMove) -> {
-            int x = destination.getX();
-            int y = destination.getY();
-
-            if (x < 0 || y < 0 || x >= SIZE || y >= SIZE) {
-                throw new IndexOutOfBoundsException();
-            }
-    
-            int movementOnX = x - pairToMove.getX();
-            int movementOnY = y - pairToMove.getY();
-    
-            if (movementOnX != 0 && movementOnY != 0 && Math.abs(movementOnX) + Math.abs(movementOnY) == 3) {
-                return new Pair<Integer,Integer>(x, y);
-            }
-    
-            return pairToMove;
-        };
+        this.movement = new MovementImpl(SIZE);
     }
 
     @Test
     public void testOutOfBoundMovement() {
-        Pair<Integer, Integer> negativeMovementOnY = new Pair<>(1, NEGATIVE_POSITION);
-        Pair<Integer, Integer> negativeMovementOnX = new Pair<>(NEGATIVE_POSITION, 1);
-        Pair<Integer, Integer> excessiveMovementOnY = new Pair<>(1, SIZE);
-        Pair<Integer, Integer> excessiveMovementOnX = new Pair<>(SIZE, 1);
+        var negativeMovementOnY = new Pair<>(1, NEGATIVE_POSITION);
+        var negativeMovementOnX = new Pair<>(NEGATIVE_POSITION, 1);
+        var excessiveMovementOnY = new Pair<>(1, SIZE);
+        var excessiveMovementOnX = new Pair<>(SIZE, 1);
         assertAll(
         () -> assertThrows(IndexOutOfBoundsException.class, () -> this.movement.move(negativeMovementOnY, this.knight)),
         () -> assertThrows(IndexOutOfBoundsException.class, () -> this.movement.move(negativeMovementOnX, this.knight)),
@@ -51,7 +35,7 @@ public class MovementTest {
     public void testKnightMoveCorrectly() {
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {
-                Pair<Integer, Integer> destination = new Pair<>(i, j);
+                var destination = new Pair<>(i, j);
                 var newPosition = this.movement.move(destination, this.knight);
                 int x = i - this.knight.getX();
                 int y = j - this.knight.getY();
