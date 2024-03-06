@@ -4,6 +4,9 @@ import javax.swing.*;
 import javax.swing.event.MouseInputAdapter;
 import javax.swing.event.MouseInputListener;
 
+import e2.model.Logics;
+import e2.model.LogicsImpl;
+
 import java.util.*;
 import java.util.Map.Entry;
 import java.awt.*;
@@ -16,8 +19,8 @@ public class GUI extends JFrame {
     private final Map<JButton,Pair<Integer,Integer>> buttons = new HashMap<>();
     private final Logics logics;
     
-    public GUI(int size) {
-        this.logics = new LogicsImpl(size);
+    public GUI(int size, int numberOfMines) {
+        this.logics = new LogicsImpl(size, numberOfMines);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setSize(100*size, 100*size);
         
