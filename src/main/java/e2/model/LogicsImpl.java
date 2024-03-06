@@ -8,14 +8,8 @@ import e2.Pair;
 public class LogicsImpl implements Logics {
 
     private final List<Cell> mines;
-    private final List<Cell> freeCells;
 
     public LogicsImpl(int size, int numberOfMines) {
-        int gridSize = size * size;
-        this.freeCells = new LinkedList<>();
-        for (int i = 0; i < gridSize - numberOfMines; i++) {
-            this.freeCells.add(new CellImpl(new Pair<>(i, i)));
-        }
         this.mines = new LinkedList<>();
         for (int i = 0; i < numberOfMines; i++) {
             Cell mine = new CellImpl(new Pair<>(i, i));
@@ -29,12 +23,8 @@ public class LogicsImpl implements Logics {
     }
 
     @Override
-    public List<Cell> getFreeCells() {
-        return List.copyOf(this.freeCells);
-    }
-
-    @Override
     public boolean hasMine(Pair<Integer, Integer> position) {
-        return false;
+        var cellToCheck = new CellImpl(position);
+        return this.mines.contains(cellToCheck);
     }
 }

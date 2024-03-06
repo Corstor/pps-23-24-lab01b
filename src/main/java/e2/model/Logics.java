@@ -8,8 +8,6 @@ public interface Logics {
 
     List<Cell> getMines();
 
-    List<Cell> getFreeCells();
-
     boolean hasMine(Pair<Integer, Integer> position);
     
 }
