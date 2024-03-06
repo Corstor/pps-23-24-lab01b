@@ -10,9 +10,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import e2.model.Cell;
+import e2.model.CellFactory;
+import e2.model.CellFactoryImpl;
 import e2.model.CellImpl;
+import e2.model.CellsGenerator;
 import e2.model.Logics;
 import e2.model.LogicsImpl;
+import e2.model.RandomCellsGenerator;
 
 public class LogicTest {
 
@@ -24,7 +28,9 @@ public class LogicTest {
 
     @BeforeEach
     public void createLogic() {
-        this.logic = new LogicsImpl(SIZE, NUMBER_OF_MINES);
+        CellFactory cellFactory = new CellFactoryImpl();
+        CellsGenerator cellsGenerator = new RandomCellsGenerator(cellFactory);
+        this.logic = new LogicsImpl(SIZE, NUMBER_OF_MINES, cellsGenerator);
         this.mines = logic.getMines();
     }
 

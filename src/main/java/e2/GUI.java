@@ -4,8 +4,12 @@ import javax.swing.*;
 import javax.swing.event.MouseInputAdapter;
 import javax.swing.event.MouseInputListener;
 
+import e2.model.CellFactory;
+import e2.model.CellFactoryImpl;
+import e2.model.CellsGenerator;
 import e2.model.Logics;
 import e2.model.LogicsImpl;
+import e2.model.RandomCellsGenerator;
 
 import java.util.*;
 import java.util.Map.Entry;
@@ -20,7 +24,9 @@ public class GUI extends JFrame {
     private final Logics logics;
     
     public GUI(int size, int numberOfMines) {
-        this.logics = new LogicsImpl(size, numberOfMines);
+        CellFactory cellFactory = new CellFactoryImpl();
+        CellsGenerator cellsGenerator = new RandomCellsGenerator(cellFactory);
+        this.logics = new LogicsImpl(size, numberOfMines, cellsGenerator);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setSize(100*size, 100*size);
         
