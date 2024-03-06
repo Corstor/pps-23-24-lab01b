@@ -6,11 +6,18 @@ import java.util.List;
 public class LogicsImpl implements Logics {
 
     private final List<Cell> mines;
+    private final List<Cell> freeCells;
 
     public LogicsImpl(int size, int numberOfMines) {
+        int gridSize = size * size;
+        this.freeCells = new LinkedList<>();
+        for (int i = 0; i < gridSize - numberOfMines; i++) {
+            this.freeCells.add(new CellImpl());
+        }
         this.mines = new LinkedList<>();
         for (int i = 0; i < numberOfMines; i++) {
-            this.mines.add(new CellImpl());
+            Cell mine = new CellImpl();
+            this.mines.add(mine);
         }
     }
 
@@ -21,6 +28,6 @@ public class LogicsImpl implements Logics {
 
     @Override
     public List<Cell> getFreeCells() {
-        return new LinkedList<>();
+        return List.copyOf(this.freeCells);
     }
 }

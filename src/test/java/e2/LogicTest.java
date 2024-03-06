@@ -1,6 +1,8 @@
 package e2;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -12,7 +14,7 @@ import e2.model.LogicsImpl;
 
 public class LogicTest {
 
-    private static final int SIZE = 20;
+    private static final int SIZE = 5;
     private static final int NUMBER_OF_MINES = 5;
 
     private Logics logic;
@@ -29,5 +31,11 @@ public class LogicTest {
     @Test
     public void testMinesArePresent() {
         assertEquals(NUMBER_OF_MINES, mines.size());
+    }
+
+    @Test
+    public void testThereAreFreeCells() {
+        int gridDimension = SIZE * SIZE;
+        assertEquals(gridDimension - NUMBER_OF_MINES, freeCells.size());
     }
 }
