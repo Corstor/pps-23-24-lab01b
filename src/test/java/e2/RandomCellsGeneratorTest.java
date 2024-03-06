@@ -10,6 +10,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import e2.model.Cell;
+import e2.model.CellFactory;
+import e2.model.CellFactoryImpl;
 import e2.model.CellImpl;
 import e2.model.CellsGenerator;
 import e2.model.RandomCellsGenerator;
@@ -19,10 +21,12 @@ public class RandomCellsGeneratorTest {
     private static final int SIZE = 5;
     private static final int NUMBER_OF_CELLS = 5;
     private CellsGenerator cellsGenerator;
+    private CellFactory cellFactory;
 
     @BeforeEach
     public void testCreateRandomCellsGenerator() {
-        cellsGenerator = new RandomCellsGenerator();
+        cellFactory = new CellFactoryImpl();
+        cellsGenerator = new RandomCellsGenerator(cellFactory);
     }
 
     @Test
@@ -30,7 +34,7 @@ public class RandomCellsGeneratorTest {
         var position = new Pair<>(0, 0);
         Cell cell = new CellImpl(position);
 
-        assertEquals(cell, this.cellsGenerator.generate(position));
+        assertEquals(cell, this.cellFactory.generate(position));
     }
 
     @Test

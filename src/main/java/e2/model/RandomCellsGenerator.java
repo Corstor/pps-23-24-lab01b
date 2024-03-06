@@ -9,14 +9,11 @@ import e2.Pair;
 public class RandomCellsGenerator implements CellsGenerator {
 
     private final Random random;
+    private final CellFactory cellFactory;
 
-    public RandomCellsGenerator() {
+    public RandomCellsGenerator(CellFactory cellFactory) {
         this.random = new Random();
-    }
-
-    @Override
-    public Cell generate(Pair<Integer, Integer> position) {
-        return new CellImpl(position);
+        this.cellFactory = new CellFactoryImpl();
     }
 
     @Override
@@ -25,7 +22,7 @@ public class RandomCellsGenerator implements CellsGenerator {
 
         for (int i = 0; i < numberOfCells; i++) {
             var randomPosition = new Pair<>(random.nextInt(size), random.nextInt(size));
-            cells.add(generate(randomPosition));
+            cells.add(this.cellFactory.generate(randomPosition));
         }
 
         return cells;
