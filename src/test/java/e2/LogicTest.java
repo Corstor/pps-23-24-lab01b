@@ -1,8 +1,9 @@
 package e2;
 
-import java.util.LinkedList;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.List;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import e2.model.Cell;
@@ -14,10 +15,19 @@ public class LogicTest {
     private static final int SIZE = 20;
     private static final int NUMBER_OF_MINES = 5;
 
+    private Logics logic;
+    private List<Cell> mines;
+    private List<Cell> freeCells;
+
+    @BeforeEach
+    public void createLogic() {
+        logic = new LogicsImpl(SIZE, NUMBER_OF_MINES);
+        mines = logic.getMines();
+        freeCells = logic.getFreeCells();
+    }
+
     @Test
-    public void testCreateLogic() {
-        Logics logic = new LogicsImpl(SIZE, NUMBER_OF_MINES);
-        List<Cell> mines = logic.getMines();
-        List<Cell> freeCells = logic.getFreeCells();
+    public void testMinesArePresent() {
+        assertEquals(NUMBER_OF_MINES, mines.size());
     }
 }
