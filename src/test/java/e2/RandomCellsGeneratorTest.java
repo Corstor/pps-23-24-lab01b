@@ -2,6 +2,7 @@ package e2;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
@@ -18,15 +19,17 @@ import e2.model.RandomCellsGenerator;
 
 public class RandomCellsGeneratorTest {
 
-    private static final int SIZE = 5;
+    private static final int SIZE = 3;
     private static final int NUMBER_OF_CELLS = 5;
     private CellsGenerator cellsGenerator;
     private CellFactory cellFactory;
+    private List<Cell> cells;
 
     @BeforeEach
     public void testCreateRandomCellsGenerator() {
         cellFactory = new CellFactoryImpl();
         cellsGenerator = new RandomCellsGenerator(cellFactory);
+        cells = cellsGenerator.generateCells(SIZE, NUMBER_OF_CELLS);
     }
 
     @Test
@@ -39,7 +42,6 @@ public class RandomCellsGeneratorTest {
 
     @Test
     public void testGenerateRandomCells() {
-        List<Cell> cells = this.cellsGenerator.generateCells(SIZE, NUMBER_OF_CELLS);
         cells.forEach( (cell) ->
             assertAll(
                 () -> assertTrue(cell.getPosition().getX() >= 0),
@@ -49,5 +51,16 @@ public class RandomCellsGeneratorTest {
             )
         );
         assertEquals(NUMBER_OF_CELLS, cells.size());
+    }
+
+    @Test
+    public void testGenerateNotOnSamePosition() {
+        for (int i = 0; i < NUMBER_OF_CELLS; i++) {
+            for (int j = 0; j < NUMBER_OF_CELLS; j++) {
+                if (i != j) {
+                    assertNotEquals(cells.get(i), cells.get(j));
+                }
+            }
+        }
     }
 }

@@ -10,6 +10,7 @@ public class RandomCellsGenerator implements CellsGenerator {
 
     private final Random random;
     private final CellFactory cellFactory;
+    private final List<Cell> cells = new LinkedList<>();
 
     public RandomCellsGenerator(CellFactory cellFactory) {
         this.random = new Random();
@@ -18,14 +19,21 @@ public class RandomCellsGenerator implements CellsGenerator {
 
     @Override
     public List<Cell> generateCells(int size, int numberOfCells) {
-        List<Cell> cells = new LinkedList<>();
-
         for (int i = 0; i < numberOfCells; i++) {
-            var randomPosition = new Pair<>(random.nextInt(size), random.nextInt(size));
-            cells.add(this.cellFactory.generate(randomPosition));
+            this.generateCell(size);
         }
 
         return cells;
+    }
+
+    private void generateCell(int size) {
+        var randomPosition = new Pair<>(random.nextInt(size), random.nextInt(size));
+        var cell = this.cellFactory.generate(randomPosition);
+        if (cells.contains(cell)) {
+            generateCell(size);
+        } else {
+            cells.add(cell);
+        }
     }
 
 }
