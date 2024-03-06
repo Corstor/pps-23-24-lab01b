@@ -22,4 +22,9 @@ public class CellTest {
     public void testGetRightPosition() {
         assertEquals(this.initialPosition, this.cell.getPosition());
     }
+
+    @Test
+    public void testEqualsCells() {
+        assertEquals(new CellImpl(initialPosition), cell);
+    }
 }
