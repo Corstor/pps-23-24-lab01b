@@ -4,7 +4,9 @@ import e2.Pair;
 
 public class CellImpl implements Cell {
 
+    private static final int ALL_NEIGHBORS_MINE = 8;
     private final Pair<Integer, Integer> position;
+    private int neighborsMines;
 
     public CellImpl(Pair<Integer, Integer> position) {
         this.position = position;
@@ -40,5 +42,16 @@ public class CellImpl implements Cell {
         return true;
     }
 
-    
+    @Override
+    public int getNeighborsMines() {
+        return neighborsMines;
+    }
+
+    @Override
+    public void incrementNeighborsMines() {
+        if (this.neighborsMines == ALL_NEIGHBORS_MINE) {
+            throw new IllegalArgumentException("A cell cannot have more than 8 neighbor mines. ");
+        }
+        this.neighborsMines++;
+    }
 }

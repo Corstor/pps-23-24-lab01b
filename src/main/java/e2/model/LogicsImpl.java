@@ -1,25 +1,18 @@
 package e2.model;
 
-import java.util.List;
-
 import e2.Pair;
 
 public class LogicsImpl implements Logics {
 
-    private final List<Cell> mines;
+    private final Grid grid;
 
-    public LogicsImpl(int size, int numberOfMines, CellsGenerator cellsGenerator) {
-        this.mines = cellsGenerator.generateCells(size, numberOfMines);
+    public LogicsImpl(Grid grid) {
+        this.grid = grid;
     }
 
     @Override
-    public List<Cell> getMines() {
-        return List.copyOf(this.mines);
+    public boolean isMine(Pair<Integer, Integer> pair) {
+        return this.grid.cellIsMine(new CellImpl(pair));
     }
 
-    @Override
-    public boolean hasMine(Pair<Integer, Integer> position) {
-        var cellToCheck = new CellImpl(position);
-        return this.mines.contains(cellToCheck);
-    }
 }

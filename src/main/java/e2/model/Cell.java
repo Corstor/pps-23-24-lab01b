@@ -6,4 +6,8 @@ public interface Cell {
 
     Pair<Integer, Integer> getPosition();
 
+    int getNeighborsMines();
+
+    void incrementNeighborsMines();
+
 }

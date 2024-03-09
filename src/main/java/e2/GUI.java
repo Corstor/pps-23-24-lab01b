@@ -4,9 +4,9 @@ import javax.swing.*;
 import javax.swing.event.MouseInputAdapter;
 import javax.swing.event.MouseInputListener;
 
-import e2.model.CellFactory;
-import e2.model.CellFactoryImpl;
 import e2.model.CellsGenerator;
+import e2.model.Grid;
+import e2.model.GridImpl;
 import e2.model.Logics;
 import e2.model.LogicsImpl;
 import e2.model.RandomCellsGenerator;
@@ -24,9 +24,9 @@ public class GUI extends JFrame {
     private final Logics logics;
     
     public GUI(int size, int numberOfMines) {
-        CellFactory cellFactory = new CellFactoryImpl();
-        CellsGenerator cellsGenerator = new RandomCellsGenerator(cellFactory);
-        this.logics = new LogicsImpl(size, numberOfMines, cellsGenerator);
+        CellsGenerator cellsGenerator = new RandomCellsGenerator();
+        Grid grid = new GridImpl(size, numberOfMines, cellsGenerator);
+        this.logics = new LogicsImpl(grid);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setSize(100*size, 100*size);
         
@@ -36,11 +36,12 @@ public class GUI extends JFrame {
         ActionListener onClick = (e)->{
             final JButton bt = (JButton)e.getSource();
             final Pair<Integer,Integer> pos = buttons.get(bt);
-            boolean aMineWasFound = false; // call the logic here to tell it that cell at 'pos' has been seleced
+            boolean aMineWasFound = this.logics.isMine(pos); // call the logic here to tell it that cell at 'pos' has been seleced
             if (aMineWasFound) {
                 quitGame();
                 JOptionPane.showMessageDialog(this, "You lost!!");
             } else {
+                bt.setEnabled(false);
                 drawBoard();            	
             }
             boolean isThereVictory = false; // call the logic here to ask if there is victory
@@ -82,6 +83,9 @@ public class GUI extends JFrame {
             // call the logic here
             // if this button is a mine, draw it "*"
             // disable the button
+            if (this.logics.isMine(entry.getValue())) {
+                entry.getKey().setText("*");
+            }
     	}
     }
 

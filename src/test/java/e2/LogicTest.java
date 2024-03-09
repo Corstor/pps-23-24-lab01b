@@ -1,6 +1,7 @@
 package e2;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.LinkedList;
@@ -10,10 +11,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import e2.model.Cell;
-import e2.model.CellFactory;
-import e2.model.CellFactoryImpl;
-import e2.model.CellImpl;
 import e2.model.CellsGenerator;
+import e2.model.Grid;
+import e2.model.GridImpl;
 import e2.model.Logics;
 import e2.model.LogicsImpl;
 import e2.model.RandomCellsGenerator;
@@ -24,39 +24,26 @@ public class LogicTest {
     private static final int NUMBER_OF_MINES = 5;
 
     private Logics logic;
-    private List<Cell> mines;
+    private Grid grid;
 
     @BeforeEach
     public void createLogic() {
-        CellFactory cellFactory = new CellFactoryImpl();
-        CellsGenerator cellsGenerator = new RandomCellsGenerator(cellFactory);
-        this.logic = new LogicsImpl(SIZE, NUMBER_OF_MINES, cellsGenerator);
-        this.mines = logic.getMines();
+        CellsGenerator cellsGenerator = new RandomCellsGenerator();
+        this.grid = new GridImpl(SIZE, NUMBER_OF_MINES, cellsGenerator);
+        this.logic = new LogicsImpl(grid);
     }
 
     @Test
-    public void testMinesArePresent() {
-        assertEquals(NUMBER_OF_MINES, this.mines.size());
+    public void testFreeCellIsNotAMine() {
+        this.grid.getFreeCells().forEach( (cell) ->
+            assertFalse(this.logic.isMine(cell.getPosition()))
+        );
     }
 
     @Test
-    public void testMinesAreGenerated() {
-        getAllCells().forEach((cell) -> {
-            var mineIsPresent = this.logic.hasMine(cell.getPosition());
-            assertTrue(this.mines.contains(cell) ? mineIsPresent : !mineIsPresent);
-        });
-    }
-
-    private List<Cell> getAllCells() {
-        List<Cell> cells = new LinkedList<>();
-
-        for (int i = 0; i < SIZE; i++) {
-            for (int j = 0; j < SIZE; j++) {
-                var position = new Pair<Integer,Integer>(i, j);
-                cells.add(new CellImpl(position));
-            }
-        }
-
-        return cells;
+    public void testCheckIfMinesExists() {
+        this.grid.getMines().forEach( (mine) -> 
+            assertTrue(this.logic.isMine(mine.getPosition()))
+        );
     }
 }
