@@ -1,5 +1,6 @@
 package e2;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -19,7 +20,7 @@ import e2.model.RandomCellsGenerator;
 public class LogicTest {
 
     private static final int SIZE = 5;
-    private static final int NUMBER_OF_MINES = 5;
+    private static final int NUMBER_OF_MINES = 24;
 
     private Logics logic;
     private Grid grid;
@@ -44,5 +45,11 @@ public class LogicTest {
         this.grid.getMines().forEach( (mine) -> 
             assertTrue(this.logic.isMine(mine.getPosition()))
         );
+    }
+
+    @Test
+    public void testHitOnAFreeCell() {
+        int neighborMines = this.logic.hit(this.grid.getFreeCells().get(0));
+        assertEquals(this.grid.getFreeCells().get(0).getNeighborsMines(), neighborMines);
     }
 }

@@ -15,4 +15,9 @@ public class LogicsImpl implements Logics {
         return this.grid.cellIsMine(new CellImpl(pair));
     }
 
+    @Override
+    public int hit(Cell cell) {
+        return this.grid.getCell(cell.getPosition()).getNeighborsMines();
+    }
+
 }

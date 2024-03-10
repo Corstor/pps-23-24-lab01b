@@ -58,5 +58,10 @@ public class CellImpl implements Cell {
         return true;
     }
 
+    @Override
+    public String toString() {
+        return "CellImpl [position=" + position + ", neighborsMines=" + neighborsMines + "]";
+    }
+
     
 }

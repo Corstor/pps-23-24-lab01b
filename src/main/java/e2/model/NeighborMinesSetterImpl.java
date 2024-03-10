@@ -54,8 +54,8 @@ public class NeighborMinesSetterImpl implements NeighborMinesSetter {
     }
 
     private boolean checkPositionIsNotOutOfBound(Pair<Integer, Integer> neighborPosition) {
-        return neighborPosition.getX() > 0 
-            && neighborPosition.getY() > 0 
+        return neighborPosition.getX() >= 0 
+            && neighborPosition.getY() >= 0 
             && neighborPosition.getX() < this.size 
             && neighborPosition.getY() < this.size;
     }
