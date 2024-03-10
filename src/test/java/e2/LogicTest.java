@@ -1,17 +1,15 @@
 package e2;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.util.LinkedList;
-import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import e2.model.Cell;
 import e2.model.CellsGenerator;
+import e2.model.FreeCellsGenerator;
 import e2.model.Grid;
 import e2.model.GridImpl;
 import e2.model.Logics;
@@ -28,8 +26,9 @@ public class LogicTest {
 
     @BeforeEach
     public void createLogic() {
-        CellsGenerator cellsGenerator = new RandomCellsGenerator();
-        this.grid = new GridImpl(SIZE, NUMBER_OF_MINES, cellsGenerator);
+        CellsGenerator<Integer> cellsGenerator = new RandomCellsGenerator();
+        CellsGenerator<Cell> freeCellsGenerator = new FreeCellsGenerator();
+        this.grid = new GridImpl(SIZE, NUMBER_OF_MINES, cellsGenerator, freeCellsGenerator);
         this.logic = new LogicsImpl(grid);
     }
 

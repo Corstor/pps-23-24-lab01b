@@ -12,8 +12,11 @@ import org.junit.jupiter.api.Test;
 import e2.model.Cell;
 import e2.model.CellImpl;
 import e2.model.CellsGenerator;
+import e2.model.FreeCellsGenerator;
 import e2.model.Grid;
 import e2.model.GridImpl;
+import e2.model.NeighborMinesSetter;
+import e2.model.NeighborMinesSetterImpl;
 import e2.model.RandomCellsGenerator;
 
 public class GridTest {
@@ -22,14 +25,18 @@ public class GridTest {
     private static final int NUMBER_OF_MINES = 5;
     private Grid grid;
     private List<Cell> mines;
+    private List<Cell> freeCellsWithNeighborMines;
+    private CellsGenerator<Cell> freeCellsGenerator;
     private List<Cell> freeCells;
 
     @BeforeEach
     public void testCreateGrid() {
-        CellsGenerator cellsGenerator = new RandomCellsGenerator();
-        grid = new GridImpl(SIZE, NUMBER_OF_MINES, cellsGenerator);
+        CellsGenerator<Integer> cellsGenerator = new RandomCellsGenerator();
+        this.freeCellsGenerator = new FreeCellsGenerator();
+        this.grid = new GridImpl(SIZE, NUMBER_OF_MINES, cellsGenerator, this.freeCellsGenerator);
         this.mines = grid.getMines();
-        this.freeCells = grid.getFreeCells();
+        this.freeCellsWithNeighborMines = grid.getFreeCells();
+        freeCells = freeCellsGenerator.generateCells(SIZE, (cell) -> !this.grid.cellIsMine(cell));
     }
 
     @Test
@@ -40,19 +47,19 @@ public class GridTest {
     @Test
     public void testGetAllFreeCells() {
         int totalNumberOfCells = SIZE * SIZE;
-        assertEquals(totalNumberOfCells - NUMBER_OF_MINES, freeCells.size());
+        assertEquals(totalNumberOfCells - NUMBER_OF_MINES, freeCellsWithNeighborMines.size());
     }
 
     @Test
     public void testFreeCellsAreNotMines() {
-        this.freeCells.forEach((cell) -> {
+        this.freeCellsWithNeighborMines.forEach((cell) -> {
             assertFalse(this.grid.cellIsMine(cell));
         });
     }
 
     @Test
     public void testFreeCellsHaveNeighborsMines() {
-        this.freeCells.forEach((cell) -> {
+        this.freeCellsWithNeighborMines.forEach((cell) -> {
             int neighborsMines = getNeighborsMines(cell);
             assertEquals(neighborsMines, cell.getNeighborsMines());
         });
@@ -101,5 +108,17 @@ public class GridTest {
             && neighborPosition.getY() > 0 
             && neighborPosition.getX() < SIZE 
             && neighborPosition.getY() < SIZE;
+    }
+
+    @Test
+    public void testGenerateFreeCells() {
+        assertEquals(this.freeCellsWithNeighborMines.size(), freeCells.size());
+    }
+
+    @Test
+    public void testSetFreeCellsNeighborMines() {
+        NeighborMinesSetter neighborMinesSetter = new NeighborMinesSetterImpl(SIZE);
+        List<Cell> cells = neighborMinesSetter.set(freeCells, (mine) -> this.grid.cellIsMine(mine));
+        assertEquals(this.freeCellsWithNeighborMines, cells);
     }
 }

@@ -11,7 +11,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import e2.model.Cell;
-import e2.model.CellImpl;
 import e2.model.CellsGenerator;
 import e2.model.RandomCellsGenerator;
 
@@ -19,21 +18,13 @@ public class RandomCellsGeneratorTest {
 
     private static final int SIZE = 3;
     private static final int NUMBER_OF_CELLS = 5;
-    private CellsGenerator cellsGenerator;
+    private CellsGenerator<Integer> cellsGenerator;
     private List<Cell> cells;
 
     @BeforeEach
     public void testCreateRandomCellsGenerator() {
         cellsGenerator = new RandomCellsGenerator();
-        cells = cellsGenerator.generateCells(SIZE, NUMBER_OF_CELLS);
-    }
-
-    @Test
-    public void testGenerateCell() {
-        var position = new Pair<>(0, 0);
-        Cell cell = new CellImpl(position);
-
-        assertEquals(cell, new CellImpl(position));
+        cells = cellsGenerator.generateCells(SIZE, (index) -> index < NUMBER_OF_CELLS);
     }
 
     @Test

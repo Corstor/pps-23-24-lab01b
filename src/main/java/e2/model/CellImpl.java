@@ -18,10 +18,24 @@ public class CellImpl implements Cell {
     }
 
     @Override
+    public int getNeighborsMines() {
+        return neighborsMines;
+    }
+
+    @Override
+    public void incrementNeighborsMines() {
+        if (this.neighborsMines == ALL_NEIGHBORS_MINE) {
+            throw new IllegalArgumentException("A cell cannot have more than 8 neighbor mines. ");
+        }
+        this.neighborsMines++;
+    }
+
+    @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((position == null) ? 0 : position.hashCode());
+        result = prime * result + neighborsMines;
         return result;
     }
 
@@ -39,19 +53,10 @@ public class CellImpl implements Cell {
                 return false;
         } else if (!position.equals(other.position))
             return false;
+        if (neighborsMines != other.neighborsMines)
+            return false;
         return true;
     }
 
-    @Override
-    public int getNeighborsMines() {
-        return neighborsMines;
-    }
-
-    @Override
-    public void incrementNeighborsMines() {
-        if (this.neighborsMines == ALL_NEIGHBORS_MINE) {
-            throw new IllegalArgumentException("A cell cannot have more than 8 neighbor mines. ");
-        }
-        this.neighborsMines++;
-    }
+    
 }
