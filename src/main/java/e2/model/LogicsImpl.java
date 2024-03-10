@@ -16,8 +16,28 @@ public class LogicsImpl implements Logics {
     }
 
     @Override
-    public int hit(Cell cell) {
-        return this.grid.getCell(cell.getPosition()).getNeighborsMines();
+    public int hit(Pair<Integer, Integer> position) {
+        return this.grid.getCell(position).getNeighborsMines();
+    }
+
+    @Override
+    public boolean isFlagged(Pair<Integer, Integer> position) {
+        return this.grid.getCell(position).isFlagged();
+    }
+
+    @Override
+    public void switchFlag(Pair<Integer, Integer> position) {
+        this.grid.getCell(position).switchFlag();
+    }
+
+    @Override
+    public boolean isActive(Pair<Integer, Integer> position) {
+        return this.grid.getCell(position).isActive();
+    }
+
+    @Override
+    public void disable(Pair<Integer, Integer> position) {
+        this.grid.getCell(position).disable();
     }
 
 }

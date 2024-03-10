@@ -10,4 +10,12 @@ public interface Cell {
 
     void incrementNeighborsMines();
 
+    boolean isFlagged();
+
+    void switchFlag();
+
+    boolean isActive();
+
+    void disable();
+
 }

@@ -2,7 +2,9 @@ package e2;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -50,5 +52,31 @@ public class CellTest {
         assertAll(
             () -> assertThrows(IllegalArgumentException.class, () -> this.cell.incrementNeighborsMines())
         );
+    }
+
+    @Test
+    public void testIsFlaggedInitiallyFalse() {
+        assertFalse(this.cell.isFlagged());
+    }
+
+    @Test
+    public void testSwitchFlag() {
+        this.cell.switchFlag();
+        assertTrue(this.cell.isFlagged());
+        this.cell.switchFlag();
+        assertFalse(this.cell.isFlagged());
+    }
+
+    @Test
+    public void testIsInitiallyActive() {
+        assertTrue(this.cell.isActive());
+    }
+
+    @Test
+    public void testSetOff() {
+        this.cell.disable();
+        assertFalse(this.cell.isActive());
+        this.cell.disable();
+        assertFalse(this.cell.isActive());
     }
 }

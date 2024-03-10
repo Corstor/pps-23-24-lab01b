@@ -49,7 +49,35 @@ public class LogicTest {
 
     @Test
     public void testHitOnAFreeCell() {
-        int neighborMines = this.logic.hit(this.grid.getFreeCells().get(0));
+        int neighborMines = this.logic.hit(this.grid.getFreeCells().get(0).getPosition());
         assertEquals(this.grid.getFreeCells().get(0).getNeighborsMines(), neighborMines);
+    }
+
+    @Test
+    public void testCellIsNotInitiallyFlagged() {
+        assertFalse(this.logic.isFlagged(this.grid.getFreeCells().get(0).getPosition()));
+    }
+
+    @Test
+    public void testSwitchFlagOfACell() {
+        var position = this.grid.getFreeCells().get(0).getPosition();
+        this.logic.switchFlag(position);
+        assertTrue(this.logic.isFlagged(position));
+        this.logic.switchFlag(position);
+        assertFalse(this.logic.isFlagged(position));
+    }
+
+    @Test
+    public void testCellIsInitiallyActive() {
+        assertTrue(this.logic.isActive(this.grid.getFreeCells().get(0).getPosition()));
+    }
+
+    @Test
+    public void testDisableCell() {
+        var position = this.grid.getFreeCells().get(0).getPosition();
+        this.logic.disable(position);
+        assertFalse(this.logic.isActive(position));
+        this.logic.disable(position);
+        assertFalse(this.logic.isActive(position));
     }
 }

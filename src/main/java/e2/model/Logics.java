@@ -6,6 +6,14 @@ public interface Logics {
 
     boolean isMine(Pair<Integer, Integer> pair);
 
-    int hit(Cell cell);
+    int hit(Pair<Integer, Integer> position);
+
+    boolean isFlagged(Pair<Integer, Integer> position);
+
+    void switchFlag(Pair<Integer, Integer> position);
+
+    boolean isActive(Pair<Integer, Integer> position);
+
+	void disable(Pair<Integer, Integer> position);
     
 }
