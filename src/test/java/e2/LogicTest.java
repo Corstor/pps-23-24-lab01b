@@ -80,4 +80,15 @@ public class LogicTest {
         this.logic.disable(position);
         assertFalse(this.logic.isActive(position));
     }
+
+    @Test
+    public void testInitiallyIsNotWon() {
+        assertFalse(this.logic.isWon());
+    }
+
+    @Test
+    public void testWin() {
+        this.grid.getFreeCells().forEach( cell -> cell.disable() );
+        assertTrue(this.logic.isWon());
+    }
 }

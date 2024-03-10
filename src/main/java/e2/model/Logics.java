@@ -15,5 +15,7 @@ public interface Logics {
     boolean isActive(Pair<Integer, Integer> position);
 
 	void disable(Pair<Integer, Integer> position);
+
+    boolean isWon();
     
 }

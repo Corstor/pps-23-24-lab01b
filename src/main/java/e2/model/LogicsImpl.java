@@ -40,4 +40,9 @@ public class LogicsImpl implements Logics {
         this.grid.getCell(position).disable();
     }
 
+    @Override
+    public boolean isWon() {
+        return this.grid.getFreeCells().stream().allMatch(cell -> !cell.isActive());
+    }
+
 }

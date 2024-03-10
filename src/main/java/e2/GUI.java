@@ -14,6 +14,7 @@ import e2.model.LogicsImpl;
 import e2.model.RandomCellsGenerator;
 
 import java.util.*;
+import java.util.List;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -23,6 +24,7 @@ public class GUI extends JFrame {
     private static final long serialVersionUID = -6218820567019985015L;
     private final Map<JButton,Pair<Integer,Integer>> buttons = new HashMap<>();
     private final Logics logics;
+    private Map<Pair<Integer,Integer>, JButton> buttonsByPos = new HashMap<>();
     
     public GUI(int size, int numberOfMines) {
         CellsGenerator<Integer> cellsGenerator = new RandomCellsGenerator();
@@ -42,11 +44,17 @@ public class GUI extends JFrame {
             if (aMineWasFound) {
                 quitGame();
                 JOptionPane.showMessageDialog(this, "You lost!!");
+                System.exit(0);
             } else {
+                this.logics.disable(pos);
                 bt.setEnabled(false);
+                var nearMines = this.logics.hit(pos);
+                if (nearMines == 0) {
+                    getNearButtons(pos, size).forEach(button -> button.doClick());
+                }
                 drawBoard();            	
             }
-            boolean isThereVictory = false; // call the logic here to ask if there is victory
+            boolean isThereVictory = this.logics.isWon(); // call the logic here to ask if there is victory
             if (isThereVictory){
                 quitGame();
                 JOptionPane.showMessageDialog(this, "You won!!");
@@ -71,7 +79,9 @@ public class GUI extends JFrame {
                 final JButton jb = new JButton(" ");
                 jb.addActionListener(onClick);
                 jb.addMouseListener(onRightClick);
-                this.buttons.put(jb,new Pair<>(i,j));
+                var pos = new Pair<>(i,j);
+                this.buttons.put(jb,pos);
+                this.buttonsByPos.put(pos, jb);
                 panel.add(jb);
             }
         }
@@ -87,6 +97,8 @@ public class GUI extends JFrame {
             // disable the button
             if (this.logics.isMine(entry.getValue())) {
                 entry.getKey().setText("*");
+            } else {
+                entry.getKey().setText(Integer.toString(this.logics.hit(entry.getValue())));
             }
             entry.getKey().setEnabled(false);
     	}
@@ -99,8 +111,51 @@ public class GUI extends JFrame {
             // if this button has a flag, put the flag
             if (this.logics.isFlagged(entry.getValue())) {
                 entry.getKey().setText("F");
+            } else {
+                entry.getKey().setText("");
+            }
+
+            if (!this.logics.isActive(entry.getValue())) {
+                var nearMines = this.logics.hit(entry.getValue());
+                entry.getKey().setText(Integer.toString(nearMines));
             }
     	}
     }
+
+    private List<JButton> getNearButtons(Pair<Integer, Integer> value, int size) {
+        List<JButton> buttons = new LinkedList<>();
+
+        getNearPositions(value, size).forEach( (neighbor) -> buttons.add(this.buttonsByPos.get(neighbor)));
+
+        return buttons;
+    }
     
+    private List<Pair<Integer, Integer>> getNearPositions(Pair<Integer, Integer> position, int size) {
+        List<Pair<Integer, Integer>> positions = new LinkedList<>();
+        int adiacentPositionsOnSingleAxis = 3;
+        for (int i = 0; i < adiacentPositionsOnSingleAxis; i++) {
+            for (int j = 0; j < adiacentPositionsOnSingleAxis; j++) {
+                var neighborPosition = getNeighborPositionFromIndexes(position, i, j);
+                if (checkPositionIsNotOutOfBound(neighborPosition, size) && !position.equals(neighborPosition)) {
+                    positions.add(neighborPosition);
+                }
+            }
+        }
+        return positions;
+    }
+
+    private Pair<Integer, Integer> getNeighborPositionFromIndexes(Pair<Integer, Integer> position, int i, int j) {
+        return new Pair<>(position.getX() + getOffsetFromIndex(i), position.getY() + getOffsetFromIndex(j));
+    }
+
+    private Integer getOffsetFromIndex(int index) {
+        return index - 1;
+    }
+
+    private boolean checkPositionIsNotOutOfBound(Pair<Integer, Integer> neighborPosition, int size) {
+        return neighborPosition.getX() >= 0 
+            && neighborPosition.getY() >= 0 
+            && neighborPosition.getX() < size 
+            && neighborPosition.getY() < size;
+    }
 }
