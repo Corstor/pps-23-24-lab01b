@@ -4,7 +4,7 @@ import e2.Pair;
 
 public interface Logics {
 
-    boolean isMine(Pair<Integer, Integer> pair);
+    boolean isMine(Pair<Integer, Integer> position);
 
     int hit(Pair<Integer, Integer> position);
 

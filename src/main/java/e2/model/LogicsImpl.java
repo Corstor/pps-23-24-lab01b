@@ -11,8 +11,8 @@ public class LogicsImpl implements Logics {
     }
 
     @Override
-    public boolean isMine(Pair<Integer, Integer> pair) {
-        return this.grid.cellIsMine(new CellImpl(pair));
+    public boolean isMine(Pair<Integer, Integer> position) {
+        return this.grid.cellIsMine(new CellImpl(position));
     }
 
     @Override
